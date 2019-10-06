@@ -173,11 +173,9 @@ function incluirTarefa(){
 
 function buscarTarefa(){
   document.getElementById('resultados').innerHTML = '';
-  var tarefa = document.getElementById('buscaTarefa').value;
+  let tarefa = document.getElementById('buscaTarefa').value;
   
-  var faixaBusca = IDBKeyRange
-    .bound(tarefa, tarefa.substr(0, tarefa.length-1)+String.fromCharCode(tarefa.charAt(tarefa.length-1)+1), false, true);
-
+  let faixaBusca = IDBKeyRange.bound(tarefa, tarefa.substr(0,tarefa.length-1) + String.fromCharCode(tarefa.charCodeAt(tarefa.length-1)+1), false, true);
     bd.transaction('tarefas').objectStore('tarefas').index('tarefa').openCursor(faixaBusca).onsuccess = listaResultados;
 
     document.getElementById('buscaTarefa').value = '';
@@ -190,7 +188,7 @@ function listaResultados(e){
   if(cursor){
     document.getElementById('resultados').innerHTML += `
       <p>
-        Codigo: ${cursor.primarykey}</br>
+        Codigo: ${cursor.primaryKey}</br>
         Tarefa: ${cursor.value.tarefa}</br>
         Data: ${cursor.value.data}</br>
         Prioridade: ${cursor.value.prioridade}
