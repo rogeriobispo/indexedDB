@@ -50,6 +50,7 @@ function atualizaTabela(){
                           <td id='tarefa-${cursor.key}'> ${cursor.value.tarefa} </td>
                           <td id='data-${cursor.key}'> ${cursor.value.data} </td>
                           <td id='prioridade-${cursor.key}'> ${cursor.value.prioridade} </td>
+                          <td id='finished-${cursor.key}'> ${cursor.value.finished==false?"<span class='glyphicon glyphicon-check'></span>":"<span class='glyphicon glyphicon glyphicon-unchecked'></span>"} </td>
                           <td id='botoes-${cursor.key}'> 
                            ${buttonsCancelEdit(cursor.key)}
                           </td>
