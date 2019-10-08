@@ -37,6 +37,22 @@ function init(){
 
 }
 
+function markAsFinished(tarefaId){
+  bd.transaction(['tarefas'], 'readwrite').objectStore('tarefas').get(tarefaId).onsuccess = (e)=>{
+    let tarefa = e.target.result;
+    if(tarefa) {
+      tarefa.finished = true;
+      e.target.source.put(tarefa, tarefaId).onsuccess = (e) => {
+        mostraAlerta('Tarefa finalizada com sucesso', 1);
+      }
+    } else {
+      mostraAlerta('Não foi possivel finalizar tarefa', 0)
+    }
+    atualizaTabela();
+
+}
+}
+
 function atualizaTabela(){
   let tableBody = document.getElementById('tableTasks');
   let linhasTabela = '';
@@ -50,7 +66,11 @@ function atualizaTabela(){
                           <td id='tarefa-${cursor.key}'> ${cursor.value.tarefa} </td>
                           <td id='data-${cursor.key}'> ${cursor.value.data} </td>
                           <td id='prioridade-${cursor.key}'> ${cursor.value.prioridade} </td>
-                          <td id='finished-${cursor.key}'> ${cursor.value.finished==false?"<span class='glyphicon glyphicon-check'></span>":"<span class='glyphicon glyphicon glyphicon-unchecked'></span>"} </td>
+                          <td id='finished-${cursor.key}'>
+                            <button class='btn btn-default' onclick='markAsFinished(${cursor.key})'> 
+                              ${cursor.value.finished==true?"<span class='glyphicon glyphicon-check'></span>":"<span class='glyphicon glyphicon-unchecked'></span>"} 
+                            </button>
+                          </td>                          
                           <td id='botoes-${cursor.key}'> 
                            ${buttonsCancelEdit(cursor.key)}
                           </td>
